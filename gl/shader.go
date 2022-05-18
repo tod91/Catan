@@ -26,6 +26,21 @@ func (sh *Shader) LoadAndCompile(filename string) {
 	gl.ShaderSource(vertexShader, 1, content, nil)
 	free()
 	gl.CompileShader(vertexShader)
+
+	// TODO: Clean this up
+	fragmentSrc, error := readShaderFile("gl/shaders/fragment.sh")
+	if err != nil {
+		panic(error)
+	}
+
+	fragmentShader := gl.CreateShader(gl.FRAGMENT_SHADER)
+	contentFragment, freeFrag := gl.Strs(fragmentSrc)
+	gl.ShaderSource(fragmentShader, 1, contentFragment, nil)
+	freeFrag()
+	gl.CompileShader(fragmentShader)
+
+	//TODO: check for shader compilation errors
+
 }
 
 func readShaderFile(filename string) (string, error) {
