@@ -5,9 +5,11 @@ import (
 )
 
 func main() {
-
 	gl.CreateWindow(640, 500, "testing")
+	shader := gl.NewShader()
+	shader.LoadAndCompile("gl/shaders/vertex.sh")
 	defer gl.CleanUp()
 
+	gl.SetViewPort(0, 0, 500, 400)
 	gl.Loop()
 }

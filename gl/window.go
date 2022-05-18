@@ -32,10 +32,9 @@ func CreateWindow(w int, h int, title string) {
 //}
 
 func Loop() {
-
 	for !window.ShouldClose() {
-
 		//ProcessInput()
+		SetBackgroundColor(0.2, 0.1, 1, 1)
 		window.SwapBuffers()
 		glfw.PollEvents()
 	}
