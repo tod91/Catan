@@ -9,10 +9,17 @@ import (
 )
 
 func NewShader() *Shader {
-	sh := &Shader{vbo: 0}
-	gl.GenBuffers(1, &sh.vbo)
-	gl.BindBuffer(gl.ARRAY_BUFFER, sh.vbo)
+	sh := &Shader{VBO: 0,
+		VAO:           0,
+		ShaderProgram: 0}
+
+	gl.GenVertexArrays(1, &sh.VAO)
+	gl.BindVertexArray(sh.VAO)
+	gl.GenBuffers(1, &sh.VBO)
+	gl.BindBuffer(gl.ARRAY_BUFFER, sh.VBO)
 	gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
+	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
+	gl.EnableVertexAttribArray(0)
 	return sh
 }
 
@@ -23,9 +30,6 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 	if err != nil {
 		panic(err)
 	}
-
-	gl.GenVertexArrays(1, &sh.VAO)
-	gl.BindVertexArray(sh.VAO)
 
 	vertexShader := gl.CreateShader(gl.VERTEX_SHADER)
 	content, freeVert := gl.Strs(shaderSrc)
@@ -87,9 +91,6 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 
 	gl.DeleteShader(vertexShader)
 	gl.DeleteShader(fragmentShader)
-
-	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
-	gl.EnableVertexAttribArray(0)
 }
 
 func readShaderFile(filename string) (string, error) {
@@ -101,7 +102,7 @@ func readShaderFile(filename string) (string, error) {
 }
 
 type Shader struct {
-	vbo           uint32
+	VBO           uint32
 	VAO           uint32
 	ShaderProgram uint32
 }
