@@ -32,7 +32,7 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 	}
 
 	vertexShader := gl.CreateShader(gl.VERTEX_SHADER)
-	content, freeVert := gl.Strs(shaderSrc)
+	content, freeVert := gl.Strs(shaderSrc + "\x00")
 	gl.ShaderSource(vertexShader, 1, content, nil)
 	freeVert()
 	gl.CompileShader(vertexShader)
@@ -57,7 +57,7 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 	}
 
 	fragmentShader := gl.CreateShader(gl.FRAGMENT_SHADER)
-	contentFragment, freeFrag := gl.Strs(fragmentSrc)
+	contentFragment, freeFrag := gl.Strs(fragmentSrc + "\x00")
 	gl.ShaderSource(fragmentShader, 1, contentFragment, nil)
 	freeFrag()
 	gl.CompileShader(fragmentShader)
@@ -108,7 +108,7 @@ type Shader struct {
 }
 
 var vertices = []float32{
-	-0.5, -0.5, 0.0,
-	0.5, -0.5, 0.0,
-	0.0, 0.5, 0.0,
+	-1.0, -0.5, 0.0,
+	1.0, -1.0, 0.0,
+	1.0, 1.0, 0.0,
 }
