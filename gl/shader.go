@@ -18,6 +18,10 @@ func NewShader() *Shader {
 	gl.GenBuffers(1, &sh.VBO)
 	gl.BindBuffer(gl.ARRAY_BUFFER, sh.VBO)
 	gl.BufferData(gl.ARRAY_BUFFER, len(vertices)*4, gl.Ptr(vertices), gl.STATIC_DRAW)
+	gl.GenBuffers(1, &sh.EBO)
+	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, sh.EBO)
+	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
+
 	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
 	gl.EnableVertexAttribArray(0)
 	return sh
@@ -104,11 +108,17 @@ func readShaderFile(filename string) (string, error) {
 type Shader struct {
 	VBO           uint32
 	VAO           uint32
+	EBO           uint32
 	ShaderProgram uint32
 }
 
 var vertices = []float32{
-	-1.0, -0.5, 0.0,
-	1.0, -1.0, 0.0,
-	1.0, 1.0, 0.0,
+	0.0, 0.0, 0.0, //center
+	-0.5, 1.0, 0.0, // left top
+	0.5, 1.0, 0.0, // right top
+	1.0, 0.0, 0.0, // right
+	0.5, -1.0, 0.0, // right bottom (notice sign)
+	-0.5, -1.0, 0.0, // left bottom
+	-1.0, 0.0, 0.0, // left
 }
+var indices = []uint32{0, 1, 2, 3, 4, 5, 6, 1}

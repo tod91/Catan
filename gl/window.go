@@ -69,8 +69,16 @@ func CheckGLErrors() {
 	fmt.Printf("\n")
 }
 
+func KeyCallback(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
+	if key == glfw.KeyE && action == glfw.Press {
+		fmt.Println("E WAS PRESSED")
+	}
+
+}
+
 func Loop(sh *Shader) {
 
+	window.SetKeyCallback(KeyCallback)
 	for !window.ShouldClose() {
 		CheckGLErrors()
 		gl.ClearColor(0.2, 0.3, 0.3, 1.0)
@@ -78,7 +86,8 @@ func Loop(sh *Shader) {
 		// draw our first triangle
 		gl.UseProgram(sh.ShaderProgram)
 		gl.BindVertexArray(sh.VAO) // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		gl.DrawArrays(gl.TRIANGLES, 0, 3)
+		gl.DrawElements(gl.TRIANGLE_FAN, 8, gl.UNSIGNED_INT, nil)
+		gl.BindVertexArray(0)
 
 		window.SwapBuffers()
 		glfw.PollEvents()
