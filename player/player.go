@@ -20,6 +20,7 @@ func (p *Player) DrawDevCard() {
 func (p *Player) RollDice() {
 
 }
+
 func (p *Player) Build() {
 
 }

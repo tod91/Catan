@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package="./gen";
+
+message Player {
+ string name = 1;
+ string phone_number = 2;
+ string address = 3;
+}
+
+message UpdateRequest {
+ string req = 1;
+}
+
+message UpdateResponse {
+ string resp = 1;
+}
+
+service PlayerLogic {
+ rpc Update(UpdateRequest) returns (UpdateResponse);
+}
