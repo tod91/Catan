@@ -23,7 +23,9 @@ func NewShader() *Shader {
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
 
 	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 5*4, 3)
 	gl.EnableVertexAttribArray(0)
+	gl.EnableVertexAttribArray(1)
 	return sh
 }
 
@@ -95,6 +97,8 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 
 	gl.DeleteShader(vertexShader)
 	gl.DeleteShader(fragmentShader)
+
+	InitTextures()
 }
 
 func readShaderFile(filename string) (string, error) {
@@ -113,12 +117,16 @@ type Shader struct {
 }
 
 var vertices = []float32{
-	0.0, 0.0, 0.0, //center
-	-0.5, 1.0, 0.0, // left top
-	0.5, 1.0, 0.0, // right top
-	1.0, 0.0, 0.0, // right
-	0.5, -1.0, 0.0, // right bottom (notice sign)
-	-0.5, -1.0, 0.0, // left bottom
-	-1.0, 0.0, 0.0, // left
+	//0.0, 0.0, 0.0, //center
+	//-0.5, 1.0, 0.0, // left top
+	//0.5, 1.0, 0.0, // right top
+	//1.0, 0.0, 0.0, // right
+	//0.5, -1.0, 0.0, // right bottom (notice sign)
+	//-0.5, -1.0, 0.0, // left bottom
+	//-1.0, 0.0, 0.0, // left
+	0.5, 0.5, 0.0, 1.0, 1.0,
+	0.5, -0.5, 0.0, 1.0, 0.0,
+	-0.5, -0.5, 0.0, 0.0, 0.0,
+	-0.5, 0.5, 0.0, 0.0, 1.0,
 }
 var indices = []uint32{0, 1, 2, 3, 4, 5, 6, 1}

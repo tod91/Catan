@@ -79,14 +79,15 @@ func KeyCallback(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action,
 func Loop(sh *Shader) {
 
 	window.SetKeyCallback(KeyCallback)
+	//gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
 	for !window.ShouldClose() {
 		CheckGLErrors()
 		gl.ClearColor(0.2, 0.3, 0.3, 1.0)
 		gl.Clear(gl.COLOR_BUFFER_BIT)
-		// draw our first triangle
 		gl.UseProgram(sh.ShaderProgram)
+		//gl.BindTexture(gl.TEXTURE_2D, 0)
 		gl.BindVertexArray(sh.VAO) // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		gl.DrawElements(gl.TRIANGLE_FAN, 8, gl.UNSIGNED_INT, nil)
+		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
 		gl.BindVertexArray(0)
 
 		window.SwapBuffers()
