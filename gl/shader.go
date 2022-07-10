@@ -10,9 +10,13 @@ import (
 )
 
 func NewShader() *Shader {
-	sh := &Shader{VBO: 0,
+	sh := &Shader{
+		VBO:           0,
 		VAO:           0,
-		ShaderProgram: 0}
+		EBO:           0,
+		TextureID:     0,
+		ShaderProgram: 0,
+	}
 
 	gl.GenVertexArrays(1, &sh.VAO)
 	gl.BindVertexArray(sh.VAO)
@@ -23,8 +27,8 @@ func NewShader() *Shader {
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, sh.EBO)
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
 
-	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
-	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 2*4, 3*4)
+	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 5*4, 0)
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 5*4, 3*4)
 	gl.EnableVertexAttribArray(0)
 	gl.EnableVertexAttribArray(1)
 
@@ -143,9 +147,9 @@ var vertices = []float32{
 	//0.5, -1.0, 0.0, // right bottom (notice sign)
 	//-0.5, -1.0, 0.0, // left bottom
 	//-1.0, 0.0, 0.0, // left
-	0.5, 0.5, 0.0, 1.0, 1.0,
-	0.5, -0.5, 0.0, 1.0, 0.0,
-	-0.5, -0.5, 0.0, 0.0, 0.0,
-	-0.5, 0.5, 0.0, 0.0, 1.0,
+	0.5, 0.5, 0.0, 1.0, 1.0, // top right
+	0.5, -0.5, 0.0, 1.0, 0.0, // bottom right
+	-0.5, -0.5, 0.0, 0.0, 0.0, // bottom left
+	-0.5, 0.5, 0.0, 0.0, 1.0, // top left
 }
-var indices = []uint32{0, 1, 3, 1, 2, 3} //[]uint32{0, 1, 2, 3, 4, 5, 6, 1}
+var indices = []uint32{0, 1, 3, 1, 2, 3}
