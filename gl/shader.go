@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"log"
+	"neilpa.me/go-stbi"
 	"os"
 	"strings"
 )
@@ -23,9 +24,27 @@ func NewShader() *Shader {
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
 
 	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 3*4, 0)
-	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 5*4, 3)
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 2*4, 3*4)
 	gl.EnableVertexAttribArray(0)
 	gl.EnableVertexAttribArray(1)
+
+	// Gen textures
+	image, err := stbi.Load("resource/wall.jpeg")
+	if err != nil {
+		panic(err)
+	}
+
+	gl.GenTextures(1, &sh.TextureID)
+	gl.BindTexture(gl.TEXTURE_2D, sh.TextureID)
+
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR)
+	gl.TexParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+
+	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, int32(image.Rect.Bounds().Size().X), int32(image.Rect.Bounds().Size().Y), 0, gl.RGBA, gl.UNSIGNED_BYTE, gl.Ptr(image.Pix))
+	gl.GenerateMipmap(gl.TEXTURE_2D)
+
 	return sh
 }
 
@@ -98,7 +117,6 @@ func (sh *Shader) LoadAndCompile(vertexFile, fragmentFile string) {
 	gl.DeleteShader(vertexShader)
 	gl.DeleteShader(fragmentShader)
 
-	InitTextures()
 }
 
 func readShaderFile(filename string) (string, error) {
@@ -113,6 +131,7 @@ type Shader struct {
 	VBO           uint32
 	VAO           uint32
 	EBO           uint32
+	TextureID     uint32
 	ShaderProgram uint32
 }
 
@@ -129,4 +148,4 @@ var vertices = []float32{
 	-0.5, -0.5, 0.0, 0.0, 0.0,
 	-0.5, 0.5, 0.0, 0.0, 1.0,
 }
-var indices = []uint32{0, 1, 2, 3, 4, 5, 6, 1}
+var indices = []uint32{0, 1, 3, 1, 2, 3} //[]uint32{0, 1, 2, 3, 4, 5, 6, 1}
