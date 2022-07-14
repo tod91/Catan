@@ -27,8 +27,8 @@ func NewShader() *Shader {
 	gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, sh.EBO)
 	gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices)*4, gl.Ptr(indices), gl.STATIC_DRAW)
 
-	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, false, 5*4, 0)
-	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, false, 5*4, 3*4)
+	gl.VertexAttribPointerWithOffset(0, 3, gl.FLOAT, true, 5*4, 0)
+	gl.VertexAttribPointerWithOffset(1, 2, gl.FLOAT, true, 5*4, 3*4)
 	gl.EnableVertexAttribArray(0)
 	gl.EnableVertexAttribArray(1)
 

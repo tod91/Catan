@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/glfw/v3.3/glfw"
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 func init() {
@@ -80,11 +81,26 @@ func Loop(sh *Shader) {
 
 	window.SetKeyCallback(KeyCallback)
 	//gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
+	var elapsed float32 = 0.1
 	for !window.ShouldClose() {
 		CheckGLErrors()
 		gl.ClearColor(0.2, 0.3, 0.3, 1.0)
 		gl.Clear(gl.COLOR_BUFFER_BIT)
+
+		rotate := mgl32.Ident4()
+		rotate = mgl32.HomogRotate3D(float32(glfw.GetTime()), mgl32.Vec3{1, 1, 1})
 		gl.UseProgram(sh.ShaderProgram)
+		rotateUniform := gl.GetUniformLocation(sh.ShaderProgram, gl.Str("rotate\x00"))
+		gl.UniformMatrix4fv(rotateUniform, 1, false, &rotate[0])
+
+		translate := mgl32.Ident4()
+
+		translate = mgl32.Translate3D(elapsed, 0, 0)
+		elapsed += 0.0001
+		gl.UseProgram(sh.ShaderProgram)
+		translateUniform := gl.GetUniformLocation(sh.ShaderProgram, gl.Str("translate\x00"))
+		gl.UniformMatrix4fv(translateUniform, 1, false, &translate[0])
+
 		gl.BindTexture(gl.TEXTURE_2D, sh.TextureID)
 		gl.BindVertexArray(sh.VAO) // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, nil)
