@@ -53,12 +53,29 @@ func main() {
 	}
 
 	geom := geometry.NewPlane(6, 6)
-	mat := material.NewStandard(math32.NewColor("antiquewhite"))
+	mat := material.NewStandard(math32.NewColor("white"))
 	mat.AddTexture(tx)
-	mat.SetBlending(material.BlendMultiply)
+	mat.SetBlending(material.BlendNone)
 	mat.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom, mat)
 	scene.Add(mesh)
+
+	// Sheep
+	sheepTX, err := texture.NewTexture2DFromImage("/Users/todorivanov/Downloads/sheep.jpeg")
+	if err != nil {
+		panic(err)
+	}
+	sheepTX.SetWrapS(gls.CLAMP_TO_BORDER)
+	sheepTX.SetWrapT(gls.CLAMP_TO_BORDER)
+
+	plane := geometry.NewPlane(4, 6)
+	mat2 := material.NewStandard(math32.NewColor("white"))
+	mat2.AddTexture(sheepTX)
+	mat2.SetBlending(material.BlendNone)
+	mat2.SetSide(material.SideDouble)
+	mesh2 := graphic.NewMesh(plane, mat2)
+	mesh2.SetPositionX(6)
+	scene.Add(mesh2)
 
 	// Create and add lights to the scene
 	scene.Add(light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.8))
