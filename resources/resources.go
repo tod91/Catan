@@ -60,4 +60,11 @@ func init() {
 		panic(err)
 	}
 	Get["wood_field"] = wood_field
+
+	die, err := texture.NewTexture2DFromImage("resources/pics/die.jpg")
+	if err != nil {
+		panic(err)
+	}
+	Get["die"] = die
+
 }
