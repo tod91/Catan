@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Catan/resources"
 	"github.com/g3n/engine/app"
 	"github.com/g3n/engine/camera"
 	"github.com/g3n/engine/core"
@@ -12,7 +13,6 @@ import (
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 	"github.com/g3n/engine/renderer"
-	"github.com/g3n/engine/texture"
 	"github.com/g3n/engine/util/helper"
 	"github.com/g3n/engine/window"
 	"time"
@@ -46,31 +46,18 @@ func main() {
 	a.Subscribe(window.OnWindowSize, onResize)
 	onResize("", nil)
 
-	// Create a blue torus and add it to the scene
-	tx, err := texture.NewTexture2DFromImage("/Users/todorivanov/Downloads/catan.jpeg")
-	if err != nil {
-		panic(err)
-	}
-
 	geom := geometry.NewPlane(6, 6)
 	mat := material.NewStandard(math32.NewColor("white"))
-	mat.AddTexture(tx)
+	mat.AddTexture(resources.Get["grain"])
 	mat.SetBlending(material.BlendNone)
 	mat.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom, mat)
 	scene.Add(mesh)
 
-	// Sheep
-	sheepTX, err := texture.NewTexture2DFromImage("/Users/todorivanov/Downloads/sheep.jpeg")
-	if err != nil {
-		panic(err)
-	}
-	sheepTX.SetWrapS(gls.CLAMP_TO_BORDER)
-	sheepTX.SetWrapT(gls.CLAMP_TO_BORDER)
-
 	plane := geometry.NewPlane(4, 6)
 	mat2 := material.NewStandard(math32.NewColor("white"))
-	mat2.AddTexture(sheepTX)
+	mat2.SetBlending(54)
+	mat2.AddTexture(resources.Get["wood_field"])
 	mat2.SetBlending(material.BlendNone)
 	mat2.SetSide(material.SideDouble)
 	mesh2 := graphic.NewMesh(plane, mat2)
