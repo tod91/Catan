@@ -7,11 +7,11 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
+	"github.com/g3n/engine/window"
 )
 
 func LoadScene(scene *core.Node) {
-	loadTile(scene, "rock_field", 6, 6, 0)
-	loadTile(scene, "clay_field", 6, 6, 6)
+	loadTile(scene, "desert", 6, 6, 0)
 	loadCubeMap(scene, 18)
 }
 
@@ -23,6 +23,13 @@ func loadTile(scene *core.Node, name string, w float32, h float32, posX float32)
 	mat.SetSide(material.SideDouble)
 	mesh := graphic.NewMesh(geom, mat)
 	mesh.SetPositionX(posX)
+
+	onCursor := func(evname string, ev interface{}) {
+		// Get" framebuffer size and update viewport accordingly
+		print("CURSOR !!!!!")
+	}
+	mesh.Subscribe(window.OnCursor, onCursor)
+	onCursor("", nil)
 	scene.Add(mesh)
 }
 

@@ -20,13 +20,14 @@ func main() {
 	// Create application and main_game
 	a := app.App()
 	scene := core.NewNode()
+	a.SetCursor(window.HandCursor)
 
 	// Set the main_game to be managed by the gui manager
 	gui.Manager().Set(scene)
 
 	// Create perspective camera
 	cam := camera.New(1)
-	cam.SetPosition(6, 0, 12)
+	cam.SetPosition(0, 0, 12)
 	scene.Add(cam)
 
 	// Set up orbit control for the camera
@@ -59,8 +60,14 @@ func main() {
 	a.Gls().ClearColor(0.5, 0.5, 0.5, 1.0)
 
 	// Run the application
+	//raycaster := collision.NewRaycaster(&math32.Vector3{0, 0, 12}, &math32.Vector3{0, 0, -12})
+	//plane := math32.NewPlane(&math32.Vector3{0, 0, 1}, -12)
+
 	a.Run(func(renderer *renderer.Renderer, deltaTime time.Duration) {
 		a.Gls().Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
 		renderer.Render(scene, cam)
+		//info := &math32.Vector3{}
+		//raycaster.IntersectPlane(plane, info)
+		//print(info)
 	})
 }
