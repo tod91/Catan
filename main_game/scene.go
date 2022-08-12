@@ -7,29 +7,45 @@ import (
 	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
-	"github.com/g3n/engine/window"
 )
 
 func LoadScene(scene *core.Node) {
-	loadTile(scene, "desert", 6, 6, 0)
-	loadCubeMap(scene, 18)
+	loadTile(scene, "desert", 6, 6, &math32.Vector3{0, 0, 0})
+	loadTile(scene, "wood_field", 6, 6, &math32.Vector3{5.8, 0, 0})
+	loadTile(scene, "rock_field", 6, 6, &math32.Vector3{11.5, 0, 0})
+	loadTile(scene, "grain_field", 6, 6, &math32.Vector3{2.9, 4.3, 0})
+	loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{-5.7, 0, 0})
+	loadTile(scene, "wood_field", 6, 6, &math32.Vector3{-11.4, 0, 0})
+	loadTile(scene, "rock_field", 6, 6, &math32.Vector3{2.9, -4.3, 0})
+	loadTile(scene, "grain_field", 6, 6, &math32.Vector3{-2.9, -4.3, 0})
+	loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{-2.9, 4.3, 0})
+	loadTile(scene, "rock_field", 6, 6, &math32.Vector3{-8.6, -4.3, 0})
+	loadTile(scene, "wood_field", 6, 6, &math32.Vector3{8.6, -4.3, 0})
+	loadTile(scene, "clay_field", 6, 6, &math32.Vector3{-8.6, 4.3, 0})
+	loadTile(scene, "grain_field", 6, 6, &math32.Vector3{8.6, 4.3, 0})
+	loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{5.8, 8.6, 0})
+	loadTile(scene, "wood_field", 6, 6, &math32.Vector3{-5.8, 8.6, 0})
+	loadTile(scene, "grain_field", 6, 6, &math32.Vector3{-5.8, -8.6, 0})
+	loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{5.8, -8.6, 0})
+	loadTile(scene, "clay_field", 6, 6, &math32.Vector3{0, -8.6, 0})
+	loadTile(scene, "clay_field", 6, 6, &math32.Vector3{0, 8.6, 0})
+
+	//loadCubeMap(scene, 18)
 }
 
-func loadTile(scene *core.Node, name string, w float32, h float32, posX float32) {
+func loadTile(scene *core.Node, name string, w float32, h float32, pos *math32.Vector3) {
 	geom := geometry.NewPlane(w, h)
 	mat := material.NewStandard(math32.NewColor("white"))
 	mat.AddTexture(resources.Get[name])
 	mat.SetBlending(material.BlendNormal)
 	mat.SetSide(material.SideDouble)
+	mat.SetDepthMask()
 	mesh := graphic.NewMesh(geom, mat)
-	mesh.SetPositionX(posX)
-
-	onCursor := func(evname string, ev interface{}) {
-		// Get" framebuffer size and update viewport accordingly
-		print("CURSOR !!!!!")
+	if name == "desert" {
+		scaleFactor := float32(0.95)
+		mesh.SetScale(scaleFactor, scaleFactor, scaleFactor)
 	}
-	mesh.Subscribe(window.OnCursor, onCursor)
-	onCursor("", nil)
+	mesh.SetPositionVec(pos)
 	scene.Add(mesh)
 }
 
