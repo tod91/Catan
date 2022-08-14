@@ -67,7 +67,7 @@ func init() {
 	}
 	Get["desert"] = desert
 
-	die, err := texture.NewTexture2DFromImage("resources/pics/dice.png")
+	die, err := texture.NewTexture2DFromImage("resources/pics/die.png")
 	if err != nil {
 		panic(err)
 	}
