@@ -47,9 +47,9 @@ func main() {
 	main_game.LoadScene(scene)
 
 	// Create and add lights to the main_game
-	scene.Add(light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 0.8))
+	scene.Add(light.NewAmbient(&math32.Color{1.0, 1.0, 1.0}, 1))
 	pointLight := light.NewPoint(&math32.Color{1, 1, 1}, 5.0)
-	pointLight.SetPosition(1, 0, 2)
+	pointLight.SetPosition(0, 0, 2)
 	scene.Add(pointLight)
 
 	// Create and add an axis helper to the main_game
