@@ -43,12 +43,6 @@ func loadTile(scene *core.Node, name string, pos *math32.Vector3) {
 		panic(err)
 	}
 
-	desert, err := dec.NewGroup()
-	if err != nil {
-		panic(err)
-	}
-	desert.SetScaleVec(&math32.Vector3{1.0099, 1.0099, 1.0099})
-
 	tile, err := dec.NewGroup()
 	if err != nil {
 		panic(err)
