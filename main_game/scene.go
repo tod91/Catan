@@ -1,66 +1,102 @@
 package main_game
 
 import (
-	"Catan/resources"
 	"github.com/g3n/engine/core"
-	"github.com/g3n/engine/geometry"
-	"github.com/g3n/engine/gls"
-	"github.com/g3n/engine/graphic"
 	"github.com/g3n/engine/loader/obj"
-	"github.com/g3n/engine/material"
 	"github.com/g3n/engine/math32"
 )
 
 func LoadScene(scene *core.Node) {
-	//loadTile(scene, "desert", 6, 6, &math32.Vector3{0, 0, 0})
-	//loadTile(scene, "wood_field", 6, 6, &math32.Vector3{5.8, 0, 0})
-	//loadTile(scene, "rock_field", 6, 6, &math32.Vector3{11.5, 0, 0})
-	//loadTile(scene, "grain_field", 6, 6, &math32.Vector3{2.9, 4.3, 0})
-	//loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{-5.7, 0, 0})
-	//loadTile(scene, "wood_field", 6, 6, &math32.Vector3{-11.4, 0, 0})
-	//loadTile(scene, "rock_field", 6, 6, &math32.Vector3{2.9, -4.3, 0})
-	//loadTile(scene, "grain_field", 6, 6, &math32.Vector3{-2.9, -4.3, 0})
-	//loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{-2.9, 4.3, 0})
-	//loadTile(scene, "rock_field", 6, 6, &math32.Vector3{-8.6, -4.3, 0})
-	//loadTile(scene, "wood_field", 6, 6, &math32.Vector3{8.6, -4.3, 0})
-	//loadTile(scene, "clay_field", 6, 6, &math32.Vector3{-8.6, 4.3, 0})
-	//loadTile(scene, "grain_field", 6, 6, &math32.Vector3{8.6, 4.3, 0})
-	//loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{5.8, 8.6, 0})
-	//loadTile(scene, "wood_field", 6, 6, &math32.Vector3{-5.8, 8.6, 0})
-	//loadTile(scene, "grain_field", 6, 6, &math32.Vector3{-5.8, -8.6, 0})
-	//loadTile(scene, "sheep_field", 6, 6, &math32.Vector3{5.8, -8.6, 0})
-	//loadTile(scene, "clay_field", 6, 6, &math32.Vector3{0, -8.6, 0})
-	//loadTile(scene, "clay_field", 6, 6, &math32.Vector3{0, 8.6, 0})
+	loadDessert(scene)
+	loadTile(scene, "sheep", &math32.Vector3{0, -2.92, 0})
+	loadTile(scene, "clay", &math32.Vector3{0, 2.92, 0})
+	loadTile(scene, "sheep", &math32.Vector3{0.86, 1.46, 0})
+	loadTile(scene, "sheep", &math32.Vector3{-0.86, 1.46, 0})
+	loadTile(scene, "grain", &math32.Vector3{-0.86, -1.46, 0})
+	loadTile(scene, "sheep", &math32.Vector3{0.86, -1.46, 0})
+	loadTile(scene, "rock", &math32.Vector3{1.73, 0, 0})
+	loadTile(scene, "wood", &math32.Vector3{-1.73, 0, 0})
+	loadTile(scene, "grain", &math32.Vector3{1.73, 2.92, 0})
+	loadTile(scene, "wood", &math32.Vector3{-1.73, 2.92, 0})
+	loadTile(scene, "grain", &math32.Vector3{1.73, -2.92, 0})
+	loadTile(scene, "clay", &math32.Vector3{-1.73, -2.92, 0})
+	loadTile(scene, "sheep", &math32.Vector3{2.595, 1.46, 0})
+	loadTile(scene, "rock", &math32.Vector3{-2.595, 1.46, 0})
+	loadTile(scene, "wood", &math32.Vector3{2.595, -1.46, 0})
+	loadTile(scene, "clay", &math32.Vector3{-2.595, -1.46, 0})
+	loadTile(scene, "rock", &math32.Vector3{-3.46, 0, 0})
+	loadTile(scene, "grain", &math32.Vector3{3.46, 0, 0})
 
-	loadCubeMap(scene, 18)
+	//loadCubeMap(scene, 18)
 }
 
-func loadTile(scene *core.Node, name string, w float32, h float32, pos *math32.Vector3) {
-	geom := geometry.NewPlane(w, h)
-	mat := material.NewStandard(math32.NewColor("white"))
-	mat.AddTexture(resources.Get[name])
-	mat.SetBlending(material.BlendNormal)
-	mat.SetSide(material.SideDouble)
-	mesh := graphic.NewMesh(geom, mat)
-	if name == "desert" {
-		scaleFactor := float32(0.95)
-		mesh.SetScale(scaleFactor, scaleFactor, scaleFactor)
+func loadTile(scene *core.Node, name string, pos *math32.Vector3) {
+
+	dec, err := obj.Decode("resources/blender/"+name+".obj", "resources/blender/"+name+".mtl")
+	if err != nil {
+		panic(err)
 	}
-	mesh.SetPositionVec(pos)
-	scene.Add(mesh)
+
+	desert, err := dec.NewGroup()
+	if err != nil {
+		panic(err)
+	}
+	desert.SetScaleVec(&math32.Vector3{1.0099, 1.0099, 1.0099})
+
+	tile, err := dec.NewGroup()
+	if err != nil {
+		panic(err)
+	}
+
+	tile.TranslateX(pos.X)
+	tile.TranslateY(pos.Y)
+	tile.TranslateY(pos.Z)
+
+	scene.Add(tile)
+}
+
+func loadDessert(scene *core.Node) {
+
+	dec, err := obj.Decode("resources/blender/desert.obj", "resources/blender/desert.mtl")
+	if err != nil {
+		panic(err)
+	}
+
+	tile, err := dec.NewGroup()
+	if err != nil {
+		panic(err)
+	}
+	scene.Add(tile)
 }
 
 func loadCubeMap(scene *core.Node, posX float32) {
 
-	dec, err := obj.Decode("resources/blender/untitled.obj", "resources/blender/untitled.mtl")
+	dec, err := obj.Decode("resources/blender/desert.obj", "resources/blender/desert.mtl")
 	if err != nil {
 		panic(err)
 	}
 
-	cube, err := dec.NewGroup()
+	desert, err := dec.NewGroup()
 	if err != nil {
 		panic(err)
 	}
+	desert.SetScaleVec(&math32.Vector3{1.01, 1.0099, 1.0099})
+
+	dec2, err := obj.Decode("resources/blender/sheep.obj", "resources/blender/sheep.mtl")
+	if err != nil {
+		panic(err)
+	}
+
+	sheep, err := dec2.NewGroup()
+	if err != nil {
+		panic(err)
+	}
+
+	sheep.TranslateX(0.85)
+	sheep.TranslateY(1.5)
+
+	scene.Add(desert)
+	scene.Add(sheep)
 
 	//cube := geometry.NewCube(6)
 	//vbo := cube.GetGeometry().VBOs()
@@ -101,34 +137,5 @@ func loadCubeMap(scene *core.Node, posX float32) {
 	//mat.SetSide(material.SideFront)
 	//mesh3 := graphic.NewMesh(cube, mat)
 	//mesh3.SetPositionX(posX)
-	scene.Add(cube)
-}
 
-func LoadHex(scene *core.Node, name string, w float32, h float32, pos *math32.Vector3) {
-	geom := geometry.NewGeometry()
-	geom.AddVBO(gls.NewVBO(positions).AddAttrib(gls.VertexPosition))
-	geom.SetIndices(indices)
-	mat := material.NewStandard(math32.NewColor("white"))
-	//mat.AddTexture(resources.Get[name])
-	mat.SetBlending(material.BlendNormal)
-	mat.SetSide(material.SideDouble)
-	mesh := graphic.NewMesh(geom, mat)
-	if name == "desert" {
-		scaleFactor := float32(0.95)
-		mesh.SetScale(scaleFactor, scaleFactor, scaleFactor)
-	}
-	mesh.SetPositionVec(pos)
-	scene.Add(mesh)
 }
-
-var positions = math32.ArrayF32{
-	0.0, 0.0, 0.0, //center
-	-0.5, 1.0, 0.0, // left top
-	0.5, 1.0, 0.0, // right top
-	1.0, 0.0, 0.0, // right
-	0.5, -1.0, 0.0, // right bottom (notice sign)
-	-0.5, -1.0, 0.0, // left bottom
-	-1.0, 0.0, 0.0, // left
-}
-
-var indices = math32.ArrayU32{0, 1, 2, 3, 4, 5, 6, 1}
