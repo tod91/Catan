@@ -66,9 +66,8 @@ func loadCubeMap(scene *core.Node, posX float32) {
 	if err != nil {
 		panic(err)
 	}
-	desert.SetScaleVec(&math32.Vector3{1.01, 1.0099, 1.0099})
 
-	dec2, err := obj.Decode("resources/blender/sheep.obj", "resources/blender/sheep.mtl")
+	dec2, err := obj.Decode("resources/blender/die.obj", "resources/blender/die.mtl")
 	if err != nil {
 		panic(err)
 	}

@@ -62,11 +62,14 @@ func main() {
 	// Run the application
 	//raycaster := collision.NewRaycaster(&math32.Vector3{0, 0, 12}, &math32.Vector3{0, 0, -12})
 	//plane := math32.NewPlane(&math32.Vector3{0, 0, 1}, -12)
+
 	a.Run(func(renderer *renderer.Renderer, deltaTime time.Duration) {
 		a.Gls().Clear(gls.DEPTH_BUFFER_BIT | gls.STENCIL_BUFFER_BIT | gls.COLOR_BUFFER_BIT)
 		renderer.Render(scene, cam)
 		//info := &math32.Vector3{}
 		//raycaster.IntersectPlane(plane, info)
 		//print(info)
+		//x, y := glfw.
+		//print(x, y)
 	})
 }
